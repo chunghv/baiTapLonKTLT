@@ -266,5 +266,5 @@ int main()
     {
         f2[i] = f1[i + 1] * (i + 1);
     }
-    cout<<"\n"<<sqrt(2);
+    chuongTrinh3();
 }
