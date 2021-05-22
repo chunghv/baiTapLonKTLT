@@ -230,12 +230,12 @@ void chuongTrinh4()
         x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
         delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
     }
-    cout << "\nTheo CT sai so II, x =  " << setprecision(20) << fixed << tmp;
+    cout << "\nTheo CT sai so II, x =  " << setprecision(20) << fixed << x;
     cout << "\ndelta2 = " << delta2;
 }
 // chương trình nhập vào sai số epsi,
 // đưa ra nghiệm theo đánh giá |x(n) -x(n-1)| < epsi
-long double chuongTrinh5(long double arr[])
+void chuongTrinh5()
 {
     long double epsi;
     long double x, tmp, delta, trunggian, m1, M2; // lưu nghiệm, các sai số và giá trị min|f'(x)| và max|f''(x)|
@@ -276,18 +276,17 @@ long double chuongTrinh5(long double arr[])
     }
     tmp = x;
     x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
-    delta = fabs(x - temp);
+    delta = fabs(x - tmp);
     while (delta > epsi)
     {
         tmp = x;
         x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
-        delta = fabs(x - temp);
+        delta = fabs(x - tmp);
     }
     cout << "\nTheo CT sai so |x(n) - x(n-1)| < epsi , x =  " << setprecision(20) << fixed << tmp;
     cout << "\ndelta = " << delta;
 }
-// chương trình chính
-int main()
+void nhapF()
 {
     cout << "bac cua fx =  ";
     cin >> bac;
@@ -309,5 +308,11 @@ int main()
     {
         f2[i] = f1[i + 1] * (i + 1);
     }
-    chuongTrinh3();
+}
+// chương trình chính
+int main()
+{
+    nhapF();
+    // vd chạy ct4
+    chuongTrinh4();
 }
