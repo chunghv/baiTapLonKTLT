@@ -130,7 +130,7 @@ void chuongTrinh3()
         cin >> a;
         cout << "\nb = ";
         cin >> b;
-    } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) >= 0);
+    } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
         cout << "nghiem o dau mut ";
@@ -161,7 +161,7 @@ void chuongTrinh3()
     {
         tmp = x;
         x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
-        delta1 = fabs(giaTriF(f, x, bac) / m1);
+        delta1 = fabs(giaTriF(f, x, bac)) / m1;
         delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
     }
     cout << "\nNghiem gan dung la " << setprecision(20) << fixed << x;
@@ -172,35 +172,35 @@ void chuongTrinh3()
 // đưa ra nghiệm gần đúng và sai số theo cả hai công thức
 void chuongTrinh4()
 {
-    long double x, delta1, delta2, trunggian, m1, M2, epsi;
+    long double epsi;
+    long double x, tmp, delta1, delta2, trunggian, m1, M2; // lưu nghiệm, các sai số và giá trị min|f'(x)| và max|f''(x)|
     MIN_MAX fphay, fhaiPhay;
-    cout << "epsi = ";
-    cin >> epsi;
-    cout << "[a,b] = ";
-    cout << "\na = ";
-    cin >> a;
-    cout << "\nb = ";
-    cin >> b;
-    if (giaTriF(f, a, bac) == 0)
+    cout << "\nNhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau";
+    do
     {
-        cout << "nghiem la : " << a;
-        return;
-    }
-    if (giaTriF(f, b, bac) == 0)
+        cout << "\na = ";
+        cin >> a;
+        cout << "\nb = ";
+        cin >> b;
+    } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
+    if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
-        cout << "nghiem la : " << b;
+        cout << "nghiem o dau mut ";
         return;
     }
     fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
     fhaiPhay = timCacGiaTriMinVaMax(f2, bacHaiPhay, a, b);
-    if (fphay.MAX * fphay.MIN <= 0 || fhaiPhay.MAX * fhaiPhay.MIN <= 0 || a >= b) // kiểm tra xem f'(x) và f''(x) có giữ nguyên dấu trên [a,b] hay không
+    if (fphay.MAX * fphay.MIN <= 0 || fhaiPhay.MAX * fhaiPhay.MIN <= 0) // kiểm tra xem f'(x) và f''(x) có giữ nguyên dấu trên [a,b] hay không
     {
-        cout << "[a,b] khong hop le! Thoat chuong trinh";
+        cout << "[a,b] khong hop le! Co f'(x) hoac f''(x) da doi dau tren [a,b]! "
+             << " Thoat chuong trinh!";
         return;
     }
+    cout << "epsi = ";
+    cin >> epsi;
     trunggian = (a * giaTriF(f, b, bac) - b * giaTriF(f, a, bac)) / ((giaTriF(f, b, bac)) - (giaTriF(f, a, bac)));
-    m1 = min(giaTriFPhay(f, a, bac), giaTriFPhay(f, b, bac)); // min|f'(x)| trên [a,b]
-    M2 = max(fabs(fhaiPhay.MAX), fabs(fhaiPhay.MIN));         // max|f''(x)| trên [a,b]
+    m1 = min(fabs(fphay.MAX), fabs(fphay.MIN));       // min|f'(x)| trên [a,b]
+    M2 = max(fabs(fhaiPhay.MAX), fabs(fhaiPhay.MIN)); // max|f''(x)| trên [a,b]
     if (giaTriF(f, trunggian, bac) * giaTriF(f, a, bac) > 0)
     {
         x = a;
@@ -210,29 +210,81 @@ void chuongTrinh4()
         x = b;
     }
     // tính theo công thức sai số thứ nhất
-    x = x - giaTriF(f, x, bac) / giaTriFPhay(f, x, bac);
-    delta1 = fabs(giaTriF(f, x, bac) / m1);
+    tmp = x;
+    tmp = tmp - (giaTriF(f, tmp, bac) / giaTriFPhay(f, tmp, bac));
+    delta1 = fabs(giaTriF(f, tmp, bac)) / m1;
     while (delta1 > epsi)
     {
-        x = x - giaTriF(f, x, bac) / giaTriFPhay(f, x, bac);
-        delta1 = fabs(giaTriF(f, x, bac) / m1);
+        tmp = tmp - (giaTriF(f, tmp, bac) / giaTriFPhay(f, tmp, bac));
+        delta1 = fabs(giaTriF(f, tmp, bac)) / m1;
     }
-    cout << "\nNghiem gan dung theo ct sai so thu 1 la ";
-    cout << setprecision(20) << fixed << x;
+    cout << "\nTheo CT sai so I, x =  " << setprecision(20) << fixed << tmp;
     cout << "\ndelta1 = " << delta1;
+    // tính theo công thức thứ hai
+    tmp = x;
+    x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
+    delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
+    while (delta2 > epsi)
+    {
+        tmp = x;
+        x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
+        delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
+    }
+    cout << "\nTheo CT sai so II, x =  " << setprecision(20) << fixed << tmp;
+    cout << "\ndelta2 = " << delta2;
 }
 // chương trình nhập vào sai số epsi,
 // đưa ra nghiệm theo đánh giá |x(n) -x(n-1)| < epsi
 long double chuongTrinh5(long double arr[])
 {
-    int epsi;
+    long double epsi;
+    long double x, tmp, delta, trunggian, m1, M2; // lưu nghiệm, các sai số và giá trị min|f'(x)| và max|f''(x)|
+    MIN_MAX fphay, fhaiPhay;
+    cout << "\nNhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau";
+    do
+    {
+        cout << "\na = ";
+        cin >> a;
+        cout << "\nb = ";
+        cin >> b;
+    } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
+    if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
+    {
+        cout << "nghiem o dau mut ";
+        return;
+    }
+    fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
+    fhaiPhay = timCacGiaTriMinVaMax(f2, bacHaiPhay, a, b);
+    if (fphay.MAX * fphay.MIN <= 0 || fhaiPhay.MAX * fhaiPhay.MIN <= 0) // kiểm tra xem f'(x) và f''(x) có giữ nguyên dấu trên [a,b] hay không
+    {
+        cout << "[a,b] khong hop le! Co f'(x) hoac f''(x) da doi dau tren [a,b]! "
+             << " Thoat chuong trinh!";
+        return;
+    }
     cout << "epsi = ";
     cin >> epsi;
-    cout << "[a,b] = ";
-    cout << "\na = ";
-    cin >> a;
-    cout << "\nb = ";
-    cin >> b;
+    trunggian = (a * giaTriF(f, b, bac) - b * giaTriF(f, a, bac)) / ((giaTriF(f, b, bac)) - (giaTriF(f, a, bac)));
+    m1 = min(fabs(fphay.MAX), fabs(fphay.MIN));       // min|f'(x)| trên [a,b]
+    M2 = max(fabs(fhaiPhay.MAX), fabs(fhaiPhay.MIN)); // max|f''(x)| trên [a,b]
+    if (giaTriF(f, trunggian, bac) * giaTriF(f, a, bac) > 0)
+    {
+        x = a;
+    }
+    else
+    {
+        x = b;
+    }
+    tmp = x;
+    x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
+    delta = fabs(x - temp);
+    while (delta > epsi)
+    {
+        tmp = x;
+        x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
+        delta = fabs(x - temp);
+    }
+    cout << "\nTheo CT sai so |x(n) - x(n-1)| < epsi , x =  " << setprecision(20) << fixed << tmp;
+    cout << "\ndelta = " << delta;
 }
 // chương trình chính
 int main()
