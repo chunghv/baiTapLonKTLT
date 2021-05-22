@@ -123,28 +123,17 @@ void chuongTrinh3()
     int soLanLap;
     long double x, tmp, delta1, delta2, trunggian, m1, M2; // lưu nghiệm, các sai số và giá trị min|f'(x)| và max|f''(x)|
     MIN_MAX fphay, fhaiPhay;
-    cout << "SO LAN LAP = ";
-    cin >> soLanLap;
     cout << "\nNhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau";
     do
     {
-        cout << "[a,b] = ";
         cout << "\na = ";
         cin >> a;
         cout << "\nb = ";
         cin >> b;
-    } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
-
-    if (giaTriF(f, a, bac) == 0)
+    } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) >= 0);
+    if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
-        cout << "nghiem o dau mut "
-             << "nghiem la : " << a;
-        return;
-    }
-    if (giaTriF(f, b, bac) == 0)
-    {
-        cout << "nghiem ow dau mut "
-             << "nghiem la : " << b;
+        cout << "nghiem o dau mut ";
         return;
     }
     fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
@@ -155,6 +144,8 @@ void chuongTrinh3()
              << " Thoat chuong trinh!";
         return;
     }
+    cout << "SO LAN LAP = ";
+    cin >> soLanLap;
     trunggian = (a * giaTriF(f, b, bac) - b * giaTriF(f, a, bac)) / ((giaTriF(f, b, bac)) - (giaTriF(f, a, bac)));
     m1 = min(fabs(fphay.MAX), fabs(fphay.MIN));       // min|f'(x)| trên [a,b]
     M2 = max(fabs(fhaiPhay.MAX), fabs(fhaiPhay.MIN)); // max|f''(x)| trên [a,b]
