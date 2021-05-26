@@ -328,7 +328,7 @@ void  mangCucTri(long double d[100]){
     d[m] =  mienNghiemDuong();
 }
 // hàm sử dụng phương pháp chia đôi    
-long double chiaDoi( long double a, long double b){
+void chiaDoi( long double a, long double b){
     long double c;
     int n = 0;
     while ( abs(a - b) > 0.5 ){
@@ -362,7 +362,7 @@ void chuongTrinh1(){
     Sort(d,m+1);	
     
     for (int i = 1; i < m; i++){
-        cout <<"cac cuc tri la ";
+        cout <<"//cac cuc tri la //";
         cout << "d["<<i<<"] = " << d[i] <<endl;
     }
     inMienPhanLy(d, bac);
