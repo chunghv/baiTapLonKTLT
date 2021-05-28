@@ -1,5 +1,5 @@
 
-////////22h51 26/05
+////////21h52 28/05
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
@@ -7,11 +7,11 @@
 #include <iomanip>
 using namespace std;
 long double f[100], f1[100], f2[100];  // luu hàm f(x), f'(x), f''(x)
-int bac, bacPhay, bacHaiPhay;          // b?c f(x), f'(x), f''(x)
-long double a, b;                      // khai báo kho?ng [a,b]
-long double ETA = 0.001, STEP = 0.001; // kh?i t?o eta, step trong thu?t toán Gradient Descent
-long double d[100];                    // luu các c?c tr?
-int m;                                 // bi?n d?m c?c tr?
+int bac, bacPhay, bacHaiPhay;          // bậc f(x), f'(x), f''(x)
+long double a, b;                      // khai báo khoảng [a,b]
+long double ETA = 0.001, STEP = 0.001; // khởi tạo eta, step trong thuật toán Gradient Descent
+long double d[100];                    // lưu các các trị
+int m;                                 // biến đếm các trị
 long double c[100];
 int t;
 long double a1, b1;
@@ -20,7 +20,7 @@ struct MIN_MAX
     long double MIN; // ki?u d? li?u t? d?nh nghia d? luu giá tr? min và max
     long double MAX; // c?a m?t hàm s? trong kho?ng [a,b] cho tru?c
 };
-//tính giá tr? c?a f(x) t?i giá tr? x0
+//tính giá trị của f(x) tại giá trị x0
 long double giaTriF(long double arr[], long double x0, int BAC)
 {
     int i;
@@ -31,7 +31,7 @@ long double giaTriF(long double arr[], long double x0, int BAC)
     }
     return Fx0;
 }
-//tính giá tr? c?a f'(x) t?i giá tr? x0
+//tính giá trị của f'(x) tại giá trị x0
 long double giaTriFPhay(long double arr[], long double x0, int BAC)
 {
     int i;
@@ -42,8 +42,8 @@ long double giaTriFPhay(long double arr[], long double x0, int BAC)
     }
     return Fphay;
 }
-// các ph?n ti?p theo ph?c v? vi?c tìm min, max c?a hàm s?
-int xetDau(long double arr[], long double x0, int BAC) // hàm xét d?u f'(x)
+
+int xetDau(long double arr[], long double x0, int BAC) // hàm xét dấu f'(x)
 {
     if (giaTriFPhay(arr, x0, BAC) == 0)
     {
@@ -58,8 +58,8 @@ int xetDau(long double arr[], long double x0, int BAC) // hàm xét d?u f'(x)
         return -1;
     }
 }
-// thu?t toán Gradient Descent v?i eta d?ng
-long double cuctri(long double arr[], int BAC, long double eta, long double x0) // tìm c?c tr? d?a phuong
+// thuật toán Gradient Descent với eta động
+long double cuctri(long double arr[], int BAC, long double eta, long double x0) // tìm cực trị địa phương
 {
     int i, dau;                // bi?n 'dau' dùng d? luu d?u c?a f'(x0)
     long double deltaX, x_New; // deltaX dùng d? xác d?nh giá tr? nh?y d?n x ti?p theo
@@ -95,8 +95,8 @@ long double cuctri(long double arr[], int BAC, long double eta, long double x0) 
 
     return x_New;
 }
-// hàm sau dây tìm giá tr? l?n nh?t và nh? nh?t
-MIN_MAX timCacGiaTriMinVaMax(long double arr[], int BAC, long double a, long double b) // truy?n vào hàm s? và kho?ng [a,b]
+// hàm sau dây tìm giá trị lớn nhất và nhỏ nhất
+MIN_MAX timCacGiaTriMinVaMax(long double arr[], int BAC, long double a, long double b) // truyền vào hàm số và khoảng [a,b]
 {
     MIN_MAX fx;
     long double x0 = a;
@@ -127,7 +127,7 @@ MIN_MAX timCacGiaTriMinVaMax(long double arr[], int BAC, long double a, long dou
     }
     return fx;
 }
-// tìm c?n du?i c?a mi?n nghi?m
+// tìm cận duới của miền nghiệm
 long double mienNghiemAm()
 {
 
@@ -262,7 +262,7 @@ long double mienNghiemAm()
     }
     return m1;
 }
-// tìm c?n trên
+// tìm cận trên
 long double mienNghiemDuong()
 {
     long double M2, m2, B2 = 0;
@@ -317,7 +317,7 @@ long double mienNghiemDuong()
     return m2;
 }
 
-// hàm s?p các c?c tr? tang d?n
+// hàm sắp các cực trị tăng dần
 double Sort(double long c[100], int n)
 {
     int i, j, count = 0;
@@ -341,7 +341,7 @@ double Sort(double long c[100], int n)
     }
     return c[100];
 }
-// hàm in mi?n phân ly bài 1
+// hàm in miền phân ly bài 1
 void inMienPhanLy(long double d[100], int bac)
 {
     int count = 0;
@@ -362,7 +362,7 @@ void inMienPhanLy(long double d[100], int bac)
         cout << "mien phan li nghiem la=(" << mienNghiemAm() << "," << mienNghiemDuong() << ")" << endl;
     }
 }
-// hàm tìm m?ng ch?a các c?c tr? và 2 d?u mút a,b
+// hàm tìm miền chứa các cực trị và 2 đầu mút a,b
 void mangCucTri(long double d[100])
 {
     long double i = mienNghiemAm();
@@ -381,7 +381,7 @@ void mangCucTri(long double d[100])
     m++;
     d[m] = mienNghiemDuong();
 }
-// hàm s? d?ng phuong pháp chia dôi
+// hàm sử dụng phuong pháp chia dôi
 void chiaDoi(long double a, long double b)
 {
     long double c;
@@ -415,6 +415,7 @@ void chiaDoi(long double a, long double b)
 // chuong trình 1
 void chuongTrinh1()
 {
+    cout << "Ban chon chuong trinh 1" << endl;
 
     cout << mienNghiemAm() << " < X < " << mienNghiemDuong() << endl;
 
@@ -422,28 +423,19 @@ void chuongTrinh1()
 
     Sort(d, m + 1);
 
-    for (int i = 1; i < m; i++)
-    {
-        cout << "//cac cuc tri la //";
-        cout << "d[" << i << "] = " << d[i] << endl;
-    }
     inMienPhanLy(d, bac);
 }
 
 // chuong trình 2
 void chuongTrinh2()
 {
+    cout << "Ban chon chuong trinh 2" << endl;
     int n = 0;
     int count = 0;
 
     mangCucTri(d);
 
     Sort(d, m + 1);
-
-    for (int i = 1; i < m; i++)
-    { // in ra các c?c tr?
-        cout << "d[" << i << "]=" << d[i] << endl;
-    }
 
     for (int i = 0; i < m; i++)
     { // tìm các mi?n phân li nghi?m, sau dó chia dôi
@@ -463,20 +455,19 @@ void chuongTrinh2()
     }
 }
 
-// chuong trình nh?p vào s? lu?ng l?n l?p mà ngu?i dùng yêu c?u
-// sau dó dua ra nghi?m g?n dúng, sai s? theo c? hai công th?c
+//chương trình 3
 void chuongTrinh3()
 {
     int soLanLap;
     long double x, tmp, delta1, delta2, trunggian, m1, M2; // luu nghi?m, các sai s? và giá tr? min|f'(x)| và max|f''(x)|
     MIN_MAX fphay, fhaiPhay;
-    cout << "\nNhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau";
+    cout << "Ban chon chuong trinh 3" << endl;
+    cout << "Nhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau" << endl;
     do
     {
-        cout << "\na = ";
-        cin >> a;
-        cout << "\nb = ";
-        cin >> b;
+        cout << "[a,b] = ";
+        cin >> a >> b;
+
     } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
@@ -511,24 +502,23 @@ void chuongTrinh3()
         delta1 = fabs(giaTriF(f, x, bac)) / m1;
         delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
     }
-    cout << "\nNghiem gan dung la " << setprecision(20) << fixed << x;
-    cout << "\ndelta1 = " << delta1 << "\n"
-         << "delta2 = " << delta2;
+    cout << "Nghiem gan dung la " << setprecision(20) << fixed << x << endl;
+    cout << "delta1 = " << delta1 << " ; "
+         << "delta2 = " << delta2 << endl;
 }
-// chuong trình nh?p vào sai s? epsi mà ngu?i dùng yêu c?u
-// dua ra nghi?m g?n dúng và sai s? theo c? hai công th?c
+//chương trình 4
 void chuongTrinh4()
 {
     long double epsi;
     long double x, tmp, delta1, delta2, trunggian, m1, M2; // luu nghi?m, các sai s? và giá tr? min|f'(x)| và max|f''(x)|
     MIN_MAX fphay, fhaiPhay;
-    cout << "\nNhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau";
+    cout << "Ban chon chuong trinh 4" << endl;
+    cout << "Nhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau" << endl;
     do
     {
-        cout << "\na = ";
-        cin >> a;
-        cout << "\nb = ";
-        cin >> b;
+        cout << "[a,b] =  ";
+        cin >> a >> b;
+
     } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
@@ -565,8 +555,8 @@ void chuongTrinh4()
         tmp = tmp - (giaTriF(f, tmp, bac) / giaTriFPhay(f, tmp, bac));
         delta1 = fabs(giaTriF(f, tmp, bac)) / m1;
     }
-    cout << "\nTheo CT sai so I, x =  " << setprecision(20) << fixed << tmp;
-    cout << "\ndelta1 = " << delta1;
+    cout << "Theo CT sai so I, x =  " << setprecision(20) << fixed << tmp << " ; delta1 = " << delta1 << endl;
+
     // tính theo công th?c th? hai
     tmp = x;
     x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
@@ -577,23 +567,21 @@ void chuongTrinh4()
         x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
         delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
     }
-    cout << "\nTheo CT sai so II, x =  " << setprecision(20) << fixed << x;
-    cout << "\ndelta2 = " << delta2;
+    cout << "Theo CT sai so II, x =  " << setprecision(20) << fixed << x << " ; delta2 = " << delta2 << endl;
 }
-// chuong trình nh?p vào sai s? epsi,
-// dua ra nghi?m theo dánh giá |x(n) -x(n-1)| < epsi
+//chương trình 5
 void chuongTrinh5()
 {
     long double epsi;
     long double x, tmp, delta, trunggian, m1, M2; // luu nghi?m, các sai s? và giá tr? min|f'(x)| và max|f''(x)|
     MIN_MAX fphay, fhaiPhay;
-    cout << "\nNhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau";
+    cout << "Ban chon chuong trinh 5" << endl;
+    cout << "Nhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau" << endl;
     do
     {
-        cout << "\na = ";
-        cin >> a;
-        cout << "\nb = ";
-        cin >> b;
+        cout << "[a,b] =  ";
+        cin >> a >> b;
+
     } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
@@ -630,9 +618,9 @@ void chuongTrinh5()
         x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
         delta = fabs(x - tmp);
     }
-    cout << "\nTheo CT sai so |x(n) - x(n-1)| < epsi , x =  " << setprecision(20) << fixed << tmp;
-    cout << "\ndelta = " << delta;
+    cout << "Theo CT sai so |x(n) - x(n-1)| < epsi , x =  " << setprecision(20) << fixed << tmp << " ; delta = " << delta << endl;
 }
+// hàm nhập f
 void nhapF()
 {
     cout << "bac cua fx =  ";
@@ -647,6 +635,7 @@ void nhapF()
         cin >> f[i];
         cout << endl;
     }
+
     // gán các h? s? cho f'(x)
     for (int i = 0; i <= bacPhay; i++)
     {
@@ -658,13 +647,13 @@ void nhapF()
         f2[i] = f1[i + 1] * (i + 1);
     }
 }
-//in mau chu
+//hàm in màu chữ
 void color(int color)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-//di chuyen con tro den toa do (x,y)
+//di chuyển con trỏ (x,y)
 void gotoxy(int x, int y)
 {
     COORD c;
@@ -672,101 +661,130 @@ void gotoxy(int x, int y)
     c.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), c);
 }
-
+// hàm tạo menu
 void MENU()
 {
 
-    int Set[] = {7, 7, 7, 7, 7}; // in mac chu ban dau mau trang (ma cua màu trang la 7)
-    int counter = 3;
+    int Set[] = {7, 7, 7, 7, 7, 7, 7, 7, 7}; // in mac chu ban dau mau trang (ma cua màu trang la 7)
+    int counter = 7;
     char key;
     for (int i = 0;;)
     {
-        gotoxy(5, 14); // di chuyen con tro den toa do
-        color(Set[0]); // in mau cua dong
-        cout << "Bai 1";
+        gotoxy(0, 0); // di chuyen con tro den toa do
+        color(Set[0]);
+        cout << "Phuong trinh vua nhap la :  ";
+        for (int i = 0; i <= bac; i++)
+        {
 
-        gotoxy(5, 15);
+            if (f[i] > 0 && i > 0)
+            {
+                cout << " + " << f[i] << "X^" << i;
+            }
+            else
+            {
+                cout << " " << f[i] << "X^" << i;
+            }
+        }
+
+        gotoxy(0, 1); // di chuyen con tro den toa do
         color(Set[1]);
-        cout << "Bai 2";
+        cout << "Moi ban chon chuong trinh( nhan ESC de thoat )";
 
-        gotoxy(5, 16);
-        color(Set[2]);
-        cout << "Bai 3";
+        gotoxy(0, 2);  // di chuyen con tro den toa do
+        color(Set[2]); // in mau cua dong
+        cout << "Chuong trinh 1";
 
-        gotoxy(5, 17);
+        gotoxy(0, 3);
         color(Set[3]);
-        cout << "Bai 4";
+        cout << "Chuong trinh 2";
 
-        gotoxy(5, 18);
+        gotoxy(0, 4);
         color(Set[4]);
-        cout << "Bai 5";
+        cout << "Chuong trinh 3";
+
+        gotoxy(0, 5);
+        color(Set[5]);
+        cout << "Chuong trinh 4";
+
+        gotoxy(0, 6);
+        color(Set[6]);
+        cout << "Chuong trinh 5";
+
+        gotoxy(0, 7);
+        color(Set[7]);
+        cout << "Exit";
+
+        gotoxy(0, 8);
 
         key = _getch();
 
-        if (key == 72 && (counter >= 2 && counter <= 5)) // UP (mã ASCII cua  len la 72)
+        if (key == 72 && (counter >= 4 && counter <= 8)) // UP (mã ASCII cua  len la 72)
         {
             counter--;
         }
-        if (key == 80 && (counter >= 1 && counter <= 4)) //DOWN (mã ASCII cua xuong la 80)
+        if (key == 80 && (counter >= 3 && counter <= 7)) //DOWN (mã ASCII cua xuong la 80)
         {
             counter++;
         }
+
         if (key == 13) //ma ASCII cua ENTER
         {
-            if (counter == 1)
-            {
-                cout << endl;
-                cout << "Ban chon chuong trinh 1" << endl;
-                chuongTrinh1();
-                break;
-            }
-            if (counter == 2)
-            {
-                cout << endl;
-                cout << "Ban chon chuong trinh 2" << endl;
-                chuongTrinh2();
-                break;
-            }
             if (counter == 3)
             {
                 cout << endl;
-                cout << "Ban chon chuong trinh 3" << endl;
-                chuongTrinh3();
+                gotoxy(0, 8);
+                chuongTrinh1();
                 break;
             }
             if (counter == 4)
             {
                 cout << endl;
-                cout << "Ban chon chuong trinh 4" << endl;
-                chuongTrinh4();
+                gotoxy(0, 8);
+                chuongTrinh2();
                 break;
             }
             if (counter == 5)
             {
                 cout << endl;
-                cout << "Ban chon chuong trinh 5" << endl;
+                gotoxy(0, 8);
+                chuongTrinh3();
+                break;
+            }
+            if (counter == 6)
+            {
+                cout << endl;
+                gotoxy(0, 8);
+                chuongTrinh4();
+                break;
+            }
+            if (counter == 7)
+            {
+                cout << endl;
+                gotoxy(0, 8);
                 chuongTrinh5();
                 break;
             }
+            if (counter == 8)
+            {
+                exit(1);
+            }
         }
-
+        if (key == 27)
+        {
+            system("cls");
+        }
         Set[0] = 7; // dat mac dinh mau chu ban dau o cac dong la trang ( ma mau trang = 7)
         Set[1] = 7;
         Set[2] = 7;
         Set[3] = 7;
         Set[4] = 7;
-
-        if (counter == 1)
-        {
-            Set[0] = 2; // dat lai mau xanh duong (ma mau xanh duong la 1)
-        }
-        if (counter == 2)
-        {
-            Set[1] = 2;
-        }
+        Set[5] = 7;
+        Set[6] = 7;
+        Set[7] = 7;
+        Set[8] = 7;
         if (counter == 3)
         {
-            Set[2] = 2;
+            Set[2] = 2; // dat lai mau xanh duong (ma mau xanh duong la 1)
         }
         if (counter == 4)
         {
@@ -776,13 +794,31 @@ void MENU()
         {
             Set[4] = 2;
         }
+        if (counter == 6)
+        {
+            Set[5] = 2;
+        }
+        if (counter == 7)
+        {
+            Set[6] = 2;
+        }
+        if (counter == 8)
+        {
+            Set[7] = 2;
+        }
     }
 }
-
-// chuong trình chính
+// chương trình chính
 int main()
 {
-    nhapF();
 
-    MENU();
+    nhapF();
+    system("cls");
+
+    cout << endl;
+
+    while (1)
+    {
+        MENU();
+    }
 }
