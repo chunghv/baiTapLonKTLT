@@ -488,7 +488,8 @@ void chuongTrinh3()
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
         cout << "Nghiem o dau mut ";
-        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 3!";
+        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 3!\n";
+        output.close();
         return;
     }
     fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
@@ -498,7 +499,8 @@ void chuongTrinh3()
         cout << "[a,b] khong hop le! Co f'(x) hoac f''(x) da doi dau tren [a,b]! "
              << " Thoat chuong trinh!";
         output << "[a,b] Khong hop le! Co f'(x) hoac f''(x) doi dau tren [a,b]";
-        output << " Thoat chuong trinh 3!";
+        output << " Thoat chuong trinh 3!\n";
+        output.close();
         return;
     }
     cout << "SO LAN LAP = ";
@@ -552,7 +554,8 @@ void chuongTrinh4()
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
         cout << "nghiem o dau mut ";
-        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 4!";
+        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 4!\n";
+        output.close();
         return;
     }
     fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
@@ -561,8 +564,9 @@ void chuongTrinh4()
     {
         cout << "[a,b] khong hop le! Co f'(x) hoac f''(x) da doi dau tren [a,b]! "
              << " Thoat chuong trinh!";
-        output << "[a,b] Khong hop le! Co f'(x) hoac f''(x) doi dau tren [a,b]";
+        output << "[a,b] Khong hop le! Co f'(x) hoac f''(x) doi dau tren [a,b]\n";
         output << " Thoat chuong trinh 4!\n";
+        output.close();
         return;
     }
     cout << "epsi = ";
@@ -632,7 +636,8 @@ void chuongTrinh5()
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
         cout << "nghiem o dau mut ";
-        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 4!";
+        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 5!\n";
+        output.close();
         return;
     }
     fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
@@ -643,6 +648,7 @@ void chuongTrinh5()
              << " Thoat chuong trinh!";
         output << "[a,b] Khong hop le! Co f'(x) hoac f''(x) doi dau tren [a,b]";
         output << " Thoat chuong trinh 5!\n";
+        output.close();
         return;
     }
     cout << "epsi = ";
@@ -707,6 +713,7 @@ void nhapF()
         }
     }
     output << endl;
+    output << "So chu so hien sau dau phay la " << soChuSoSauDauPhay << endl;
     // gán các hệ số cho f'(x)
     for (int i = 0; i <= bacPhay; i++) // ghi vào file hàm f(x)
     {
@@ -883,10 +890,9 @@ void MENU()
 }
 // chương trình chính
 int main()
-{
-    nhapF();
-    cout << "nhap so chu so muon hien thi sau dau phay: ";
+{   cout << "nhap so chu so muon hien thi sau dau phay: ";
     cin >> soChuSoSauDauPhay;
+    nhapF();
     system("cls");
     cout << endl;
     while (1)

@@ -1,0 +1,43 @@
+NOTE: delta1 la sai so theo cong thuc dung min|f'(x)| 
+delta2 laf sai so theo cong thuc dung min|f'(x)| va max|f''(x)|
+Phuong trinh vua nhap la :   -35.64X^0 + 34.02X^1 -10.3X^2 + 1X^3
+So chu so hien sau dau phay la 12
+Ban vua chon chuong trinh 2
+khoang li nghiem (a,b) thoa man |a-b| <= 0.5 la (2.07311 , 2.41863)
+khoang li nghiem (a,b) thoa man |a-b| <= 0.5 la (3.43331 , 3.76789)
+khoang li nghiem (a,b) thoa man |a-b| <= 0.5 la (4.35667 , 4.61087)
+Ban vua chon chuong trinh 3 
+Khoang [a,b] ban nhap la: [2.07,2.41]
+So lan lap ban nhap  = 4
+Diem bat dau lap = 2.41
+       Lap lan 1: x = 2.11956           ||delta1 = 0.157628           ||delta2 = 0.19185
+       Lap lan 2: x = 2.19349           ||delta1 = 0.0117517           ||delta2 = 0.0124281
+       Lap lan 3: x = 2.19995           ||delta1 = 8.63264e-05           ||delta2 = 9.50896e-05
+       Lap lan 4: x = 2.2           ||delta1 = 4.78139e-09           ||delta2 = 5.28524e-09
+Thoat chuong trinh 3!
+Ban vua chon chuong trinh 4
+Khoang [a,b] ban nhap la: [3,4]
+[a,b] Khong hop le! Co f'(x) hoac f''(x) doi dau tren [a,b]
+ Thoat chuong trinh 4!
+Ban vua chon chuong trinh 4
+Khoang [a,b] ban nhap la: [3.45,3.7]
+Epsilon = 1e-09
+Diem bat dau lap = 3.7
+Tinh theo cong thuc sai so thu nhat 
+       x = 3.59381    || delta1 = 0.00692412
+       x = 3.59999    || delta1 = 1.64796e-05
+       x = 3.6    || delta1 = 9.66415e-11
+Tinh theo cong thuc sai so thu hai 
+       x = 3.59381    || delta2 = 0.00798394
+       x = 3.59999    || delta2 = 2.70381e-05
+       x = 3.6    || delta2 = 1.54635e-10
+Thoat chuong trinh 4!
+Ban vua chon chuong trinh 5: tim nghiem gan dung theo cong thuc sai so  |x(n) - x(n-1)| < epsi
+Khoang [a,b] ban nhap la: [4.35,4.61]
+Diem bat dau lap = 4.35
+       x = 4.55541    || delta = 0.205414
+       x = 4.50418    || delta = 0.0512369
+       x = 4.50003    || delta = 0.00415045
+       x = 4.5    || delta = 2.66975e-05
+       x = 4.5    || delta = 1.10186e-09
+Thoat chuong trinh 5! 
