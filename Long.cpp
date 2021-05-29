@@ -1,5 +1,4 @@
-
-////////21h52 28/05
+#include <fstream>
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
@@ -14,7 +13,10 @@ long double d[100];                    // lưu các các trị
 int m;                                 // biến đếm các trị
 long double c[100];
 int t;
+int soChuSoSauDauPhay;                                  //số chữ số thập phân sau dấu phẩy
+string h = "D:\\kyThuatLapTrinh\\baiTapLon\\chung.txt"; // địa chỉ file text ghi lại quá trình thực hiện chương trình
 long double a1, b1;
+ofstream output; // biến để ghi quá trình thực hiện chương trình vào file
 struct MIN_MAX
 {
     long double MIN; // ki?u d? li?u t? d?nh nghia d? luu giá tr? min và max
@@ -344,14 +346,18 @@ double Sort(double long c[100], int n)
 // hàm in miền phân ly bài 1
 void inMienPhanLy(long double d[100], int bac)
 {
+
     int count = 0;
     for (int i = 0; i < m; i++)
     {
         for (int j = i + 1; j <= m; j++)
         {
-            if ((giaTriF(f, d[i], bac)) * giaTriF(f, d[j], bac) < 0)
+            if ((giaTriF(f, d[i], bac)) * giaTriF(f, d[j], bac) <= 0)
             {
-                cout << "mien phan li nghiem la=(" << d[i] << "," << d[j] << ")" << endl;
+                cout << "mien phan li nghiem la=(" << setprecision(soChuSoSauDauPhay) << fixed << d[i] << "," << d[j] << ")" << endl;
+                output << "khoang phan ly nghiem: ";
+                output << "(" << d[i] << "," << d[j] << ")"
+                       << "\n";
                 count++;
             }
             break;
@@ -359,7 +365,8 @@ void inMienPhanLy(long double d[100], int bac)
     }
     if (count == 0)
     {
-        cout << "mien phan li nghiem la=(" << mienNghiemAm() << "," << mienNghiemDuong() << ")" << endl;
+        cout << "mien phan li nghiem la=(" << setprecision(soChuSoSauDauPhay) << fixed << mienNghiemAm() << "," << mienNghiemDuong() << ")" << endl;
+        output << "mien phan li nghiem la (" << mienNghiemAm() << ", " << mienNghiemDuong() << ")" << endl;
     }
 }
 // hàm tìm miền chứa các cực trị và 2 đầu mút a,b
@@ -405,40 +412,44 @@ void chiaDoi(long double a, long double b)
     if (n == 0)
     {
         cout << "!!! Khong the dung phuong phap chia doi !!!" << endl;
-        cout << "Mien nghiem la (" << mienNghiemAm() << " , " << mienNghiemDuong() << ")" << endl;
+        output << "!KHong the dùng phuong phap chia doi ";
+        cout << "Mien nghiem la (" << setprecision(soChuSoSauDauPhay) << fixed << mienNghiemAm() << " , " << mienNghiemDuong() << ")" << endl;
+        output << "\nMien nghiem la"
+               << "(" << mienNghiemAm() << ", " << mienNghiemDuong() << ")" << endl;
     }
     else
     {
-        cout << "khoang li nghiem (a,b) thoa man |a-b| <= 0.5 la (" << a << " , " << b << ")" << endl;
+        cout << "khoang li nghiem (a,b) thoa man |a-b| <= 0.5 la (" << setprecision(soChuSoSauDauPhay) << fixed << a << " , " << b << ")" << endl;
+        output << "khoang li nghiem (a,b) thoa man |a-b| <= 0.5 la (" << a << " , " << b << ")" << endl;
     }
 }
 // chuong trình 1
 void chuongTrinh1()
 {
+    output.open(h, ios::app);
     cout << "Ban chon chuong trinh 1" << endl;
-
+    output << "Ban vua chon chuong trinh 1 \n";
     cout << mienNghiemAm() << " < X < " << mienNghiemDuong() << endl;
-
+    output << "Khoang chua cac nghiem neu co: "
+           << "[" << mienNghiemAm() << "," << mienNghiemDuong() << "] \n";
     mangCucTri(d);
-
     Sort(d, m + 1);
-
     inMienPhanLy(d, bac);
+    output.close();
 }
 
 // chuong trình 2
 void chuongTrinh2()
 {
+    output.open(h, ios::app);
     cout << "Ban chon chuong trinh 2" << endl;
+    output << "Ban vua chon chuong trinh 2\n";
     int n = 0;
     int count = 0;
-
     mangCucTri(d);
-
     Sort(d, m + 1);
-
     for (int i = 0; i < m; i++)
-    { // tìm các mi?n phân li nghi?m, sau dó chia dôi
+    { // tìm các miền phân ly nghiệm sau đó chia đôi
         for (int j = i + 1; j <= m; j++)
         {
             if ((giaTriF(f, d[i], bac)) * giaTriF(f, d[j], bac) < 0)
@@ -453,15 +464,18 @@ void chuongTrinh2()
     {
         chiaDoi(mienNghiemAm(), mienNghiemDuong());
     }
+    output.close();
 }
 
 //chương trình 3
 void chuongTrinh3()
 {
+    output.open(h, ios::app);
     int soLanLap;
     long double x, tmp, delta1, delta2, trunggian, m1, M2; // luu nghi?m, các sai s? và giá tr? min|f'(x)| và max|f''(x)|
     MIN_MAX fphay, fhaiPhay;
-    cout << "Ban chon chuong trinh 3" << endl;
+    cout << "Ban vua chon chuong trinh 3" << endl;
+    output << "Ban vua chon chuong trinh 3 \n";
     cout << "Nhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau" << endl;
     do
     {
@@ -469,9 +483,12 @@ void chuongTrinh3()
         cin >> a >> b;
 
     } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
+    output << "Khoang [a,b] ban nhap la: "
+           << "[" << a << "," << b << "]\n";
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
-        cout << "nghiem o dau mut ";
+        cout << "Nghiem o dau mut ";
+        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 3!";
         return;
     }
     fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
@@ -480,20 +497,25 @@ void chuongTrinh3()
     {
         cout << "[a,b] khong hop le! Co f'(x) hoac f''(x) da doi dau tren [a,b]! "
              << " Thoat chuong trinh!";
+        output << "[a,b] Khong hop le! Co f'(x) hoac f''(x) doi dau tren [a,b]";
+        output << " Thoat chuong trinh 3!";
         return;
     }
     cout << "SO LAN LAP = ";
     cin >> soLanLap;
+    output << "So lan lap ban nhap  = " << soLanLap << endl;
     trunggian = (a * giaTriF(f, b, bac) - b * giaTriF(f, a, bac)) / ((giaTriF(f, b, bac)) - (giaTriF(f, a, bac)));
     m1 = min(fabs(fphay.MAX), fabs(fphay.MIN));       // min|f'(x)| trên [a,b]
     M2 = max(fabs(fhaiPhay.MAX), fabs(fhaiPhay.MIN)); // max|f''(x)| trên [a,b]
     if (giaTriF(f, trunggian, bac) * giaTriF(f, a, bac) > 0)
     {
         x = a;
+        output << "Diem bat dau lap = " << x << endl;
     }
     else
     {
         x = b;
+        output << "Diem bat dau lap = " << x << endl;
     }
     for (int i = 1; (i <= soLanLap); i++)
     {
@@ -501,18 +523,23 @@ void chuongTrinh3()
         x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
         delta1 = fabs(giaTriF(f, x, bac)) / m1;
         delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
+        output << "       Lap lan " << i << ": x = " << x << "           ||delta1 = " << delta1 << "           ||delta2 = " << delta2 << endl;
     }
-    cout << "Nghiem gan dung la " << setprecision(20) << fixed << x << endl;
+    cout << "Nghiem gan dung la " << setprecision(soChuSoSauDauPhay) << fixed << x << endl;
     cout << "delta1 = " << delta1 << " ; "
          << "delta2 = " << delta2 << endl;
+    output << "Thoat chuong trinh 3!\n";
+    output.close();
 }
 //chương trình 4
 void chuongTrinh4()
 {
+    output.open(h, ios::app);
     long double epsi;
     long double x, tmp, delta1, delta2, trunggian, m1, M2; // luu nghi?m, các sai s? và giá tr? min|f'(x)| và max|f''(x)|
     MIN_MAX fphay, fhaiPhay;
-    cout << "Ban chon chuong trinh 4" << endl;
+    cout << "Ban vua chon chuong trinh 4, Tim gan dung nghiem theo ca hai cong thuc sai so voi epsi cho truoc" << endl;
+    output << "Ban vua chon chuong trinh 4\n";
     cout << "Nhap vao doan [a,b] sao cho a<b va f(a)*f(b) trai dau" << endl;
     do
     {
@@ -520,9 +547,12 @@ void chuongTrinh4()
         cin >> a >> b;
 
     } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
+    output << "Khoang [a,b] ban nhap la: "
+           << "[" << a << "," << b << "]\n";
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
         cout << "nghiem o dau mut ";
+        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 4!";
         return;
     }
     fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
@@ -531,47 +561,61 @@ void chuongTrinh4()
     {
         cout << "[a,b] khong hop le! Co f'(x) hoac f''(x) da doi dau tren [a,b]! "
              << " Thoat chuong trinh!";
+        output << "[a,b] Khong hop le! Co f'(x) hoac f''(x) doi dau tren [a,b]";
+        output << " Thoat chuong trinh 4!\n";
         return;
     }
     cout << "epsi = ";
     cin >> epsi;
+    output << "Epsilon = " << epsi << endl;
     trunggian = (a * giaTriF(f, b, bac) - b * giaTriF(f, a, bac)) / ((giaTriF(f, b, bac)) - (giaTriF(f, a, bac)));
     m1 = min(fabs(fphay.MAX), fabs(fphay.MIN));       // min|f'(x)| trên [a,b]
     M2 = max(fabs(fhaiPhay.MAX), fabs(fhaiPhay.MIN)); // max|f''(x)| trên [a,b]
     if (giaTriF(f, trunggian, bac) * giaTriF(f, a, bac) > 0)
     {
         x = a;
+        output << "Diem bat dau lap = " << x << endl;
     }
     else
     {
         x = b;
+        output << "Diem bat dau lap = " << x << endl;
     }
     // tính theo công th?c sai s? th? nh?t
+    output << "Tinh theo cong thuc sai so thu nhat \n";
     tmp = x;
     tmp = tmp - (giaTriF(f, tmp, bac) / giaTriFPhay(f, tmp, bac));
     delta1 = fabs(giaTriF(f, tmp, bac)) / m1;
+    output << "       x = " << tmp << "    || delta1 = " << delta1 << endl;
     while (delta1 > epsi)
     {
         tmp = tmp - (giaTriF(f, tmp, bac) / giaTriFPhay(f, tmp, bac));
         delta1 = fabs(giaTriF(f, tmp, bac)) / m1;
+        output << "       x = " << tmp << "    || delta1 = " << delta1 << endl;
     }
-    cout << "Theo CT sai so I, x =  " << setprecision(20) << fixed << tmp << " ; delta1 = " << delta1 << endl;
-
+    cout << "Theo CT sai so I, x =  " << setprecision(soChuSoSauDauPhay) << fixed << tmp << " ; delta1 = " << delta1 << endl;
+    output << "Tinh theo cong thuc sai so thu hai \n";
     // tính theo công th?c th? hai
     tmp = x;
     x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
     delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
+    output << "       x = " << x << "    || delta2 = " << delta2 << endl;
     while (delta2 > epsi)
     {
         tmp = x;
         x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
         delta2 = (M2 * (x - tmp) * (x - tmp)) / (2 * m1);
+        output << "       x = " << x << "    || delta2 = " << delta2 << endl;
     }
-    cout << "Theo CT sai so II, x =  " << setprecision(20) << fixed << x << " ; delta2 = " << delta2 << endl;
+    cout << "Theo CT sai so II, x =  " << setprecision(soChuSoSauDauPhay) << fixed << x << " ; delta2 = " << delta2 << endl;
+    output << "Thoat chuong trinh 4!\n";
+    output.close();
 }
 //chương trình 5
 void chuongTrinh5()
 {
+    output.open(h, ios::app);
+    output << "Ban vua chon chuong trinh 5: tim nghiem gan dung theo cong thuc sai so  |x(n) - x(n-1)| < epsi\n";
     long double epsi;
     long double x, tmp, delta, trunggian, m1, M2; // luu nghi?m, các sai s? và giá tr? min|f'(x)| và max|f''(x)|
     MIN_MAX fphay, fhaiPhay;
@@ -583,9 +627,12 @@ void chuongTrinh5()
         cin >> a >> b;
 
     } while (a >= b || giaTriF(f, a, bac) * giaTriF(f, b, bac) > 0);
+    output << "Khoang [a,b] ban nhap la: "
+           << "[" << a << "," << b << "]\n";
     if (giaTriF(f, a, bac) == 0 || giaTriF(f, b, bac) == 0)
     {
         cout << "nghiem o dau mut ";
+        output << "Khoang [a,b] ban nhap co nghiem o dau mut, Thoat chuong trinh 4!";
         return;
     }
     fphay = timCacGiaTriMinVaMax(f1, bacPhay, a, b);
@@ -594,6 +641,8 @@ void chuongTrinh5()
     {
         cout << "[a,b] khong hop le! Co f'(x) hoac f''(x) da doi dau tren [a,b]! "
              << " Thoat chuong trinh!";
+        output << "[a,b] Khong hop le! Co f'(x) hoac f''(x) doi dau tren [a,b]";
+        output << " Thoat chuong trinh 5!\n";
         return;
     }
     cout << "epsi = ";
@@ -604,25 +653,34 @@ void chuongTrinh5()
     if (giaTriF(f, trunggian, bac) * giaTriF(f, a, bac) > 0)
     {
         x = a;
+        output << "Diem bat dau lap = " << x << endl;
     }
     else
     {
         x = b;
+        output << "Diem bat dau lap = " << x << endl;
     }
     tmp = x;
     x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
     delta = fabs(x - tmp);
+    output << "       x = " << x << "    || delta = " << delta << endl;
     while (delta > epsi)
     {
         tmp = x;
         x = x - (giaTriF(f, x, bac) / giaTriFPhay(f, x, bac));
         delta = fabs(x - tmp);
+        output << "       x = " << x << "    || delta = " << delta << endl;
     }
-    cout << "Theo CT sai so |x(n) - x(n-1)| < epsi , x =  " << setprecision(20) << fixed << tmp << " ; delta = " << delta << endl;
+    cout << "Theo CT sai so |x(n) - x(n-1)| < epsi , x =  " << setprecision(soChuSoSauDauPhay) << fixed << tmp << " ; delta = " << delta << endl;
+    output << "Thoat chuong trinh 5! \n";
+    output.close();
 }
 // hàm nhập f
 void nhapF()
 {
+    output.open(h, ios::app);
+    output << "NOTE: delta1 la sai so theo cong thuc dung min|f'(x)| \n"
+           << "delta2 laf sai so theo cong thuc dung min|f'(x)| va max|f''(x)|\n";
     cout << "bac cua fx =  ";
     cin >> bac;
     cout << endl;
@@ -635,17 +693,31 @@ void nhapF()
         cin >> f[i];
         cout << endl;
     }
+    output << "Phuong trinh vua nhap la :  ";
+    for (int i = 0; i <= bac; i++)
+    {
 
-    // gán các h? s? cho f'(x)
-    for (int i = 0; i <= bacPhay; i++)
+        if (f[i] > 0 && i > 0)
+        {
+            output << " + " << f[i] << "X^" << i;
+        }
+        else
+        {
+            output << " " << f[i] << "X^" << i;
+        }
+    }
+    output << endl;
+    // gán các hệ số cho f'(x)
+    for (int i = 0; i <= bacPhay; i++) // ghi vào file hàm f(x)
     {
         f1[i] = f[i + 1] * (i + 1);
     }
-    // gán các h? s? cho f''(x)
+    // gán các hệ số cho f''(x)
     for (int i = 0; i <= bacHaiPhay; i++)
     {
         f2[i] = f1[i + 1] * (i + 1);
     }
+    output.close();
 }
 //hàm in màu chữ
 void color(int color)
@@ -688,7 +760,7 @@ void MENU()
 
         gotoxy(0, 1); // di chuyen con tro den toa do
         color(Set[1]);
-        cout << "Moi ban chon chuong trinh( nhan ESC de thoat )";
+        cout << "Moi ban chon chuong trinh( nhan ESC de chon chuong trinh khac  )";
 
         gotoxy(0, 2);  // di chuyen con tro den toa do
         color(Set[2]); // in mau cua dong
@@ -766,6 +838,7 @@ void MENU()
             }
             if (counter == 8)
             {
+
                 exit(1);
             }
         }
@@ -811,12 +884,11 @@ void MENU()
 // chương trình chính
 int main()
 {
-
     nhapF();
+    cout << "nhap so chu so muon hien thi sau dau phay: ";
+    cin >> soChuSoSauDauPhay;
     system("cls");
-
     cout << endl;
-
     while (1)
     {
         MENU();
